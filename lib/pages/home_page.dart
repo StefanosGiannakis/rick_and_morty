@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
 import 'package:rick_and_morty/bloc/interactions_bloc.dart';
+import 'package:rick_and_morty/pages/details_page.dart';
 
 class HomePage extends StatelessWidget {
   final String title;
@@ -69,6 +70,11 @@ class HomePage extends StatelessWidget {
                     }
                     return GestureDetector(
                       onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DetailsPage(character: state.allCharacters[index],)),
+                        );
                         print('tapped');
                       },
                       child: characterCard(state, index),
@@ -83,7 +89,7 @@ class HomePage extends StatelessWidget {
 
   Widget characterCard(CharacterState state, int index) {
     return Container(
-      height: 140,
+      height: 160,
       // padding: const EdgeInsets.symmetric(horizontal: 4.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
       decoration: BoxDecoration(
@@ -100,8 +106,8 @@ class HomePage extends StatelessWidget {
                   bottomLeft: Radius.circular(16.0)),
               child: CachedNetworkImage(
                 imageUrl: state.allCharacters[index].image,
-                height: 140.0,
-                width: 140.0,
+                height: 160.0,
+                width: 160.0,
                 placeholder: (context, url) =>
                     const CircularProgressIndicator(),
               ),
@@ -155,6 +161,18 @@ class HomePage extends StatelessWidget {
                 const Text('Last known location:',
                     maxLines: 2,
                     style: TextStyle(color: Colors.white38, fontSize: 14)),
+                const SizedBox(height: 2),
+                Text(state.allCharacters[index].location.name,
+                    maxLines: 4,
+                    style: const TextStyle(color: Colors.white, fontSize: 15)),
+                const SizedBox(height: 12),
+                const Text('First seen in:',
+                    maxLines: 2,
+                    style: TextStyle(color: Colors.white38, fontSize: 14)),
+                const SizedBox(height: 2),
+                Text(state.allCharacters[index].origin.name,
+                    maxLines: 4,
+                    style: const TextStyle(color: Colors.white, fontSize: 15)),
               ],
             ),
           ),

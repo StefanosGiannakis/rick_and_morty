@@ -4,18 +4,37 @@ import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/models/characters_paginator.dart';
 import '../models/character.dart';
 
-const rootUrl = 'https://rickandmortyapi.com/api/character';
-
 class CharacterApiProvider {
   Client client = Client();
-  late List<dynamic> characterModels;
+  List<dynamic> characterModels = [];
   late CharacterPaginator characterPaginatorModel;
+  late Map<String, dynamic> fetchedModels = {};
+  String charactersUrl = 'https://rickandmortyapi.com/api/character';
 
-  void fetchCharacters() async {
-      var response = await client.get(Uri.parse(rootUrl));
-      var responseBody = json.decode(response.body);
+  Future<Map<String, dynamic>> fetchCharacters({String? nextPageUrl}) async {
+    if (nextPageUrl != null) {
+      charactersUrl = nextPageUrl;
+    }
 
-      characterModels = responseBody['results'].map((item) => Character.fromJson(item)).toList();
-      characterPaginatorModel = CharacterPaginator.fromJson(responseBody['info']);
+    var response = await client.get(Uri.parse(charactersUrl));
+    var responseBody = json.decode(response.body);
+
+    if (characterModels.isEmpty) {
+      characterModels = responseBody['results']
+          .map((item) => Character.fromJson(item))
+          .toList();
+    } else {
+      characterModels.addAll(responseBody['results']
+          .map((character) => Character.fromJson(character))
+          .toList());
+    }
+
+    characterPaginatorModel = CharacterPaginator.fromJson(responseBody['info']);
+    print('length' + characterModels.length.toString());
+
+    fetchedModels['characterModels'] = characterModels;
+    fetchedModels['characterPaginatorModel'] = characterPaginatorModel;
+
+    return fetchedModels;
   }
 }

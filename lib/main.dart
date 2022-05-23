@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/pages/home_page.dart';
-import 'package:rick_and_morty/resources/character_api_provider.dart';
+
+import 'bloc/character_bloc.dart';
+import 'bloc/interactions_bloc.dart';
 
 void main() {
   runApp(const MyApp());
-
-  CharacterApiProvider apiProvider = CharacterApiProvider();
-
-  apiProvider.fetchCharacters();
 }
 
 class MyApp extends StatelessWidget {
@@ -15,13 +14,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<CharacterBloc>(
+          create: (context) => CharacterBloc(),
+        ),
+        BlocProvider<InteractionsBloc>(
+          create: (context) => InteractionsBloc(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Rick & Morty',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.grey,
+        ),
+        home: const HomePage(title: 'Ricky & Morty'),
       ),
-      home: const HomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
-

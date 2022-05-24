@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<CharacterBloc>(
+          // create: (context) => CharacterBloc()..add(FetchCharacters()),
           create: (context) => CharacterBloc(),
         ),
         // BlocProvider<InteractionsBloc>(

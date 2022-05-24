@@ -1,27 +1,38 @@
 part of 'character_bloc.dart';
 
-class CharacterState {
-  List<dynamic> allCharacters;
-  CharacterPaginator? charactersPaginator;
-  bool isLoading;
+class CharacterState { // extend equetable
+  final List<Character> allCharacters;
+  final CharacterPaginator? charactersPaginator;
+  final bool isLoading;
 
-  CharacterState(
-      {required this.allCharacters,
-      required this.charactersPaginator,
-      required this.isLoading});
+  CharacterState({
+    required this.allCharacters,
+    required this.charactersPaginator,
+    required this.isLoading,
+  });
 
-  CharacterState copyWith(
-      {List<dynamic>? allCharacters,
-      CharacterPaginator? charactersPaginator,
-      bool? isLoading}) {
+  CharacterState copyWith({
+    List<Character>? allCharacters,
+    CharacterPaginator? charactersPaginator,
+    bool? isLoading,
+  }) {
     return CharacterState(
-        allCharacters: allCharacters ?? this.allCharacters,
-        charactersPaginator: charactersPaginator ?? this.charactersPaginator,
-        isLoading: isLoading ?? this.isLoading);
+      allCharacters: allCharacters ?? this.allCharacters,
+      charactersPaginator: charactersPaginator ?? this.charactersPaginator,
+      isLoading: isLoading ?? this.isLoading,
+    );
+  }
+
+  bool get hasReachedMax {
+    return charactersPaginator != null && charactersPaginator!.next == null;
   }
 }
 
 class CharacterInitial extends CharacterState {
   CharacterInitial()
-      : super(allCharacters: [], charactersPaginator: null, isLoading: false);
+      : super(
+          allCharacters: [],
+          charactersPaginator: null,
+          isLoading: true,
+        );
 }

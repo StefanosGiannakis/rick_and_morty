@@ -3,91 +3,137 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
+import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/pages/details_page.dart';
 import 'package:rick_and_morty/widgets/common_character_details.dart';
 
-class HomePage extends StatelessWidget with DescriptionHelpers {
+class HomePage extends StatefulWidget {
   final String title;
   const HomePage({Key? key, required this.title}) : super(key: key);
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    _scrollController.addListener(_onScroll);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _scrollController
+      ..removeListener(_onScroll)
+      ..dispose();
+    super.dispose();
+  }
+
+  bool get _isBottom {
+    if (!_scrollController.hasClients) return false;
+    final maxScroll = _scrollController.position.maxScrollExtent;
+    final currentScroll = _scrollController.offset;
+    return currentScroll >= (maxScroll * 0.9);
+  }
+
+  void _onScroll() {
+    if (_isBottom) context.read<CharacterBloc>().add(FetchCharactersNextPage());
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          title,
+          widget.title,
           style: const TextStyle(color: Colors.white),
         ),
       ),
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
       body: BlocBuilder<CharacterBloc, CharacterState>(
         builder: (context, state) {
-          if (state is CharacterInitial) {
-            context.read<CharacterBloc>().add(FetchCharacters());
-          }
-
-          if (state.isLoading) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [CircularProgressIndicator()],
-              ),
-            );
-          }
-
           return ListView.builder(
-              itemCount: state.allCharacters.length,
-              itemBuilder: (BuildContext context, int index) {
-                if ((index + 1) == state.allCharacters.length) {
-                  context.read<CharacterBloc>().add(FetchCharactersNextPage());
-                }
-                print('MY INDEX : ' + index.toString());
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => DetailsPage(
-                                character: state.allCharacters[index],
-                              )),
-                    );
-                  },
-                  child: characterCard(state, index),
+            itemCount: state.hasReachedMax
+                ? state.allCharacters.length
+                : state.allCharacters.length + 1,
+            controller: _scrollController,
+            itemBuilder: (BuildContext context, int index) {
+              if (index >= state.allCharacters.length) {
+                return const Center(
+                  child: SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(),
+                  ),
                 );
-              });
+              }
+
+              return CharacterListItem(
+                character: state.allCharacters[index],
+                onItemClick: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => DetailsPage(
+                        character: state.allCharacters[index],
+                      ),
+                    ),
+                  );
+                },
+              );
+            },
+          );
         },
       ),
     );
   }
+}
 
-  Widget characterCard(CharacterState state, int index) {
-    return Container(
-      height: 160,
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
-      decoration: BoxDecoration(
+class CharacterListItem extends StatelessWidget {
+  final Character character;
+  final VoidCallback onItemClick;
+  const CharacterListItem({
+    Key? key,
+    required this.character,
+    required this.onItemClick,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onItemClick,
+      child: Container(
+        height: 160,
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
+        decoration: BoxDecoration(
           color: const Color.fromRGBO(59, 62, 67, 1),
-          borderRadius: BorderRadius.circular(16.0)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.only(right: 12.0),
-            child: ClipRRect(
-              borderRadius: const BorderRadius.only(
+          borderRadius: BorderRadius.circular(16.0),
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(right: 12.0),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(16.0),
-                  bottomLeft: Radius.circular(16.0)),
-              child: CachedNetworkImage(
-                imageUrl: state.allCharacters[index].image,
-                height: 160.0,
-                width: 160.0,
-                placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
+                  bottomLeft: Radius.circular(16.0),
+                ),
+                child: CachedNetworkImage(
+                  imageUrl: character.image,
+                  height: 160.0,
+                  width: 160.0,
+                  placeholder: (context, url) =>
+                      const CircularProgressIndicator(),
+                ),
               ),
             ),
-          ),
-          CommonCharacterDetails(character: state.allCharacters[index])
-        ],
+            CommonCharacterDetails(character: character),
+          ],
+        ),
       ),
     );
   }

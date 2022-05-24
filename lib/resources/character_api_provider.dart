@@ -30,7 +30,6 @@ class CharacterApiProvider {
     }
 
     characterPaginatorModel = CharacterPaginator.fromJson(responseBody['info']);
-    print('length' + characterModels.length.toString());
 
     fetchedModels['characterModels'] = characterModels;
     fetchedModels['characterPaginatorModel'] = characterPaginatorModel;

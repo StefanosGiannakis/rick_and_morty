@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
 import 'package:rick_and_morty/bloc/interactions_bloc.dart';
+import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/pages/details_page.dart';
+import 'package:rick_and_morty/widgets/common_character_details.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatelessWidget with DescriptionHelpers {
   final String title;
   const HomePage({Key? key, required this.title}) : super(key: key);
 
@@ -21,11 +23,7 @@ class HomePage extends StatelessWidget {
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
       body: BlocConsumer<InteractionsBloc, InteractionsState>(
         listener: (context, state) {
-          // // TODO: implement listener
-
           if (state.isLoading) {
-            // isLoading = state.isLoading;
-            print('i stoped');
             // context.read<InteractionsBloc>().add(StopLoading());
           }
           print('is LOADING' + state.toString());
@@ -73,7 +71,9 @@ class HomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => DetailsPage(character: state.allCharacters[index],)),
+                              builder: (context) => DetailsPage(
+                                    character: state.allCharacters[index],
+                                  )),
                         );
                         print('tapped');
                       },
@@ -90,7 +90,6 @@ class HomePage extends StatelessWidget {
   Widget characterCard(CharacterState state, int index) {
     return Container(
       height: 160,
-      // padding: const EdgeInsets.symmetric(horizontal: 4.0),
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
       decoration: BoxDecoration(
           color: const Color.fromRGBO(59, 62, 67, 1),
@@ -113,82 +112,9 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(top: 12.0, left: 2.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              // @todo wrap texty
-              children: <Widget>[
-                Text(
-                  state.allCharacters[index].id.toString() +
-                      ' ' +
-                      state.allCharacters[index].name,
-                  maxLines: 2,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                  textAlign: TextAlign.left,
-                  softWrap: true,
-                ),
-                Row(
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        color: getCharacterStatusColor(state, index),
-                        borderRadius: BorderRadius.circular(7),
-                      ),
-                      constraints: const BoxConstraints(
-                        minWidth: 8,
-                        minHeight: 8,
-                      ),
-                      child: const SizedBox(
-                        width: 2,
-                        height: 2,
-                      ),
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      state.allCharacters[index].status,
-                      style: const TextStyle(color: Colors.white, fontSize: 14),
-                      textAlign: TextAlign.left,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 12),
-                const Text('Last known location:',
-                    maxLines: 2,
-                    style: TextStyle(color: Colors.white38, fontSize: 14)),
-                const SizedBox(height: 2),
-                Text(state.allCharacters[index].location.name,
-                    maxLines: 4,
-                    style: const TextStyle(color: Colors.white, fontSize: 15)),
-                const SizedBox(height: 12),
-                const Text('First seen in:',
-                    maxLines: 2,
-                    style: TextStyle(color: Colors.white38, fontSize: 14)),
-                const SizedBox(height: 2),
-                Text(state.allCharacters[index].origin.name,
-                    maxLines: 4,
-                    style: const TextStyle(color: Colors.white, fontSize: 15)),
-              ],
-            ),
-          ),
+          CommonCharacterDetails(character: state.allCharacters[index])
         ],
-        // ),
       ),
     );
-  }
-
-  getCharacterStatusColor(CharacterState state, int index) {
-    if (state.allCharacters[index].status == 'Alive') {
-      return Colors.green;
-    } else if (state.allCharacters[index].status == 'Dead') {
-      return Colors.red;
-    }
-
-    return const Color(0x00ffffff);
   }
 }

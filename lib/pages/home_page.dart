@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
-import 'package:rick_and_morty/bloc/interactions_bloc.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/pages/details_page.dart';
 import 'package:rick_and_morty/widgets/common_character_details.dart';
@@ -21,67 +20,42 @@ class HomePage extends StatelessWidget with DescriptionHelpers {
         ),
       ),
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
-      body: BlocConsumer<InteractionsBloc, InteractionsState>(
-        listener: (context, state) {
-          if (state.isLoading) {
-            // context.read<InteractionsBloc>().add(StopLoading());
-          }
-          print('is LOADING' + state.toString());
-        },
+      body: BlocBuilder<CharacterBloc, CharacterState>(
         builder: (context, state) {
-          return BlocBuilder<CharacterBloc, CharacterState>(
-            builder: (context, state) {
-              print('is ' + (state).toString());
-              if (state is CharacterInitial) {
-                context.read<CharacterBloc>().add(FetchCharacters());
-              }
+          if (state is CharacterInitial) {
+            context.read<CharacterBloc>().add(FetchCharacters());
+          }
 
-              if (state.allCharacters.isEmpty ||
-                  context.read<InteractionsBloc>().state.isLoading) {
-                return Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: const [CircularProgressIndicator()],
-                  ),
-                );
-              }
+          if (state.isLoading) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [CircularProgressIndicator()],
+              ),
+            );
+          }
 
-              return ListView.builder(
-                  itemCount: state.allCharacters.length,
-                  itemBuilder: (context, int index) {
-                    if ((index + 1) == state.allCharacters.length &&
-                        !context.read<InteractionsBloc>().state.isLoading) {
-                      // @todo implement loaders
-                      // context.read<InteractionsBloc>().add(StartLoading());
-                      // context.read<InteractionsBloc>().add(StopLoading());
-                      context
-                          .read<CharacterBloc>()
-                          .add(FetchCharactersNextPage());
-
-                      //     .add(FetchCharactersNextPage(whenDone: () {
-                      //   print('when done #########'+ context.read<InteractionsBloc>().state.isLoading.toString());
-                      //   // blocB.add(BlocBEvent())
-                      //   // context.read<InteractionsBloc>().add(StopLoading());
-                      // }
-                      // ));
-                    }
-                    return GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailsPage(
-                                    character: state.allCharacters[index],
-                                  )),
-                        );
-                        print('tapped');
-                      },
-                      child: characterCard(state, index),
+          return ListView.builder(
+              itemCount: state.allCharacters.length,
+              itemBuilder: (BuildContext context, int index) {
+                if ((index + 1) == state.allCharacters.length) {
+                  context.read<CharacterBloc>().add(FetchCharactersNextPage());
+                }
+                print('MY INDEX : ' + index.toString());
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => DetailsPage(
+                                character: state.allCharacters[index],
+                              )),
                     );
-                  });
-            },
-          );
+                  },
+                  child: characterCard(state, index),
+                );
+              });
         },
       ),
     );

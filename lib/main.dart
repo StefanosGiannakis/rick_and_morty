@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/pages/home_page.dart';
 
 import 'bloc/character_bloc.dart';
-import 'bloc/interactions_bloc.dart';
 
 void main() {
   runApp(const MyApp());
@@ -19,9 +18,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<CharacterBloc>(
           create: (context) => CharacterBloc(),
         ),
-        BlocProvider<InteractionsBloc>(
-          create: (context) => InteractionsBloc(),
-        ),
+        // BlocProvider<InteractionsBloc>(
+        //   create: (context) => InteractionsBloc(),
+        // ),
       ],
       child: MaterialApp(
         title: 'Rick & Morty',

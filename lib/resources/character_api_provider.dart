@@ -1,12 +1,13 @@
 import 'dart:convert';
-import 'package:http/http.dart' show Client;
+import 'package:dio/dio.dart';
+
 import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/models/characters_paginator.dart';
 import 'package:rick_and_morty/models/characters_response.dart';
 import '../models/character.dart';
 
 class CharacterApiProvider {
-  Client client = Client();
+  var dio = Dio();
 
   String charactersUrl = 'https://rickandmortyapi.com/api/character';
 
@@ -15,18 +16,17 @@ class CharacterApiProvider {
       charactersUrl = nextPageUrl;
     }
 
-    var response = await client.get(Uri.parse(charactersUrl));
-    var responseBody = json.decode(response.body);
+    var response = await dio.get(charactersUrl);
 
     if (response.statusCode != 200) {
       throw Exception();
     }
 
     return CharacterResponse(
-      characters: (responseBody['results'] as List)
+      characters: (response.data['results'] as List)
           .map((item) => Character.fromJson(item))
           .toList(),
-      paginator: CharacterPaginator.fromJson(responseBody['info']),
+      paginator: CharacterPaginator.fromJson(response.data['info']),
     );
   }
 }

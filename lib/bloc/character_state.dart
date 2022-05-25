@@ -1,11 +1,11 @@
 part of 'character_bloc.dart';
 
-class CharacterState { // extend equetable
+class CharacterState extends Equatable{ // extend equetable
   final List<Character> allCharacters;
   final CharacterPaginator? charactersPaginator;
   final bool isLoading;
 
-  CharacterState({
+   const CharacterState({
     required this.allCharacters,
     required this.charactersPaginator,
     required this.isLoading,
@@ -26,6 +26,9 @@ class CharacterState { // extend equetable
   bool get hasReachedMax {
     return charactersPaginator != null && charactersPaginator!.next == null;
   }
+
+  @override
+  List<Object?> get props => [allCharacters, charactersPaginator, isLoading];
 }
 
 class CharacterInitial extends CharacterState {

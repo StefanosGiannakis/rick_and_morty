@@ -106,33 +106,41 @@ class CharacterListItem extends StatelessWidget {
     return GestureDetector(
       onTap: onItemClick,
       child: Container(
-        height: 160,
         margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 14.0),
-        decoration: BoxDecoration(
+        child: Material(
           color: const Color.fromRGBO(59, 62, 67, 1),
-          borderRadius: BorderRadius.circular(16.0),
-        ),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(right: 12.0),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(16.0),
-                  bottomLeft: Radius.circular(16.0),
-                ),
-                child: CachedNetworkImage(
-                  imageUrl: character.image,
-                  height: 160.0,
-                  width: 160.0,
-                  placeholder: (context, url) =>
-                      const CircularProgressIndicator(),
-                ),
-              ),
+          elevation: 1.0,
+          type: MaterialType.card,
+          clipBehavior: Clip.hardEdge,
+          shape: RoundedRectangleBorder(
+            side: const BorderSide(
+              color: Color.fromRGBO(59, 62, 67, 1),
+              width: 1,
             ),
-            CommonCharacterDetails(character: character),
-          ],
+            borderRadius: BorderRadius.circular(16.0),
+          ),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                Flexible(
+                  flex: 1,
+                  fit: FlexFit.tight,
+                  child: Image.network(
+                    character.image,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                Expanded(
+                  flex: 3,
+                  child: CommonCharacterDetails(character: character),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );

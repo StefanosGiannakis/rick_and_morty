@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
-import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/pages/details_page.dart';
 import 'package:rick_and_morty/widgets/common_character_details.dart';
@@ -55,6 +54,16 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
       body: BlocBuilder<CharacterBloc, CharacterState>(
         builder: (context, state) {
+          if (state.status == CharacterStatus.failure) {
+            return const Center(
+                child: Text(
+              'Failed to fetch posts',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ));
+          }
+
           return ListView.builder(
             itemCount: state.hasReachedMax
                 ? state.allCharacters.length
@@ -132,7 +141,7 @@ class CharacterListItem extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(
-                  width: 5,
+                  width: 8,
                 ),
                 Expanded(
                   flex: 3,

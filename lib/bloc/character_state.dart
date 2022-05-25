@@ -1,25 +1,31 @@
 part of 'character_bloc.dart';
 
-class CharacterState extends Equatable{ // extend equetable
+enum CharacterStatus { initial, success, failure }
+
+class CharacterState extends Equatable {
   final List<Character> allCharacters;
   final CharacterPaginator? charactersPaginator;
   final bool isLoading;
+  final CharacterStatus status;
 
-   const CharacterState({
+  const CharacterState({
     required this.allCharacters,
     required this.charactersPaginator,
     required this.isLoading,
+    required this.status,
   });
 
   CharacterState copyWith({
     List<Character>? allCharacters,
     CharacterPaginator? charactersPaginator,
     bool? isLoading,
+    CharacterStatus? status,
   }) {
     return CharacterState(
       allCharacters: allCharacters ?? this.allCharacters,
       charactersPaginator: charactersPaginator ?? this.charactersPaginator,
       isLoading: isLoading ?? this.isLoading,
+      status: status ?? this.status,
     );
   }
 
@@ -37,5 +43,6 @@ class CharacterInitial extends CharacterState {
           allCharacters: [],
           charactersPaginator: null,
           isLoading: true,
+          status: CharacterStatus.initial,
         );
 }

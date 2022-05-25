@@ -13,12 +13,14 @@ class CharacterApiProvider {
   Future<CharacterResponse> fetchCharacters({String? nextPageUrl}) async {
     if (nextPageUrl != null) {
       charactersUrl = nextPageUrl;
-
-      print(nextPageUrl);
     }
 
     var response = await client.get(Uri.parse(charactersUrl));
     var responseBody = json.decode(response.body);
+
+    if (response.statusCode != 200) {
+      throw Exception();
+    }
 
     return CharacterResponse(
       characters: (responseBody['results'] as List)

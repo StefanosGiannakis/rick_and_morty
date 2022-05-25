@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
 import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/models/characters_paginator.dart';
 import 'package:rick_and_morty/resources/character_api_provider.dart';
@@ -20,7 +19,7 @@ EventTransformer<E> throttleDroppable<E>(Duration duration) {
 }
 
 class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
-  CharacterApiProvider apiProvider = CharacterApiProvider();
+  final apiProvider = CharacterApiProvider();
 
   CharacterBloc() : super(CharacterInitial()) {
     on<CharacterEvent>(

@@ -13,16 +13,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<CharacterBloc>(
-          // create: (context) => CharacterBloc()..add(FetchCharacters()),
-          create: (context) => CharacterBloc(),
-        ),
-        // BlocProvider<InteractionsBloc>(
-        //   create: (context) => InteractionsBloc(),
-        // ),
-      ],
+    return BlocProvider(
+      create: (context) => CharacterBloc(),
       child: MaterialApp(
         title: 'Rick & Morty',
         debugShowCheckedModeBanner: false,

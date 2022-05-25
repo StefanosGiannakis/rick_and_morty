@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => DetailsPage(
-                        character: state.allCharacters[index],
+                        characterId: state.allCharacters[index].id,
                       ),
                     ),
                   );

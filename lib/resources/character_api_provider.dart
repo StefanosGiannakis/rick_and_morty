@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 
 import 'package:rick_and_morty/models/character.dart';
+import 'package:rick_and_morty/models/character_details.dart';
 import 'package:rick_and_morty/models/characters_paginator.dart';
 import 'package:rick_and_morty/models/characters_response.dart';
 import '../models/character.dart';
@@ -28,5 +29,17 @@ class CharacterApiProvider {
           .toList(),
       paginator: CharacterPaginator.fromJson(response.data['info']),
     );
+  }
+
+  Future<CharacterDetails> fetchCharacterDetails({
+    required int characterId,
+  }) async {
+    var response = await dio.get(charactersUrl + "/" + characterId.toString());
+
+    if (response.statusCode != 200) {
+      throw Exception();
+    }
+
+    return CharacterDetails.fromJson(response.data);
   }
 }

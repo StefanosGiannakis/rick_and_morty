@@ -42,27 +42,9 @@ class CharacterDetailsView extends StatelessWidget {
                     CommonCharacterDetails(
                       character: characterDetails,
                     ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      'Gender:',
-                      style: TextStyle(color: Colors.white38, fontSize: 12),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      characterDetails.gender,
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
-                    ),
+                    DisplayGender(gender: characterDetails.gender),
                     const SizedBox(height: 12),
-                    const Text(
-                      'Episodes:',
-                      style: TextStyle(color: Colors.white38, fontSize: 12),
-                    ),
-                    const SizedBox(height: 2),
-                    // ListView.builder(itemBuilder: itemBuilder)
-                    Text(
-                      characterDetails.origin.name,
-                      style: const TextStyle(color: Colors.white, fontSize: 13),
-                    ),
+                    DisplayEpisodes(episodes: characterDetails.episodes),
                   ],
                 ),
               ),
@@ -70,6 +52,57 @@ class CharacterDetailsView extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DisplayGender extends StatelessWidget {
+  final String gender;
+  const DisplayGender({
+    Key? key,
+    required this.gender,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Gender:',
+          style: TextStyle(color: Colors.white38, fontSize: 12),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          gender,
+          style: const TextStyle(color: Colors.white, fontSize: 13),
+        ),
+      ],
+    );
+  }
+}
+
+class DisplayEpisodes extends StatelessWidget {
+  final List<String>? episodes;
+  const DisplayEpisodes({
+    Key? key,
+    this.episodes,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: const [
+        Text(
+          'Episodes:',
+          style: TextStyle(color: Colors.white38, fontSize: 12),
+        ),
+        SizedBox(height: 2),
+        Text(
+          'episodes',
+          style: TextStyle(color: Colors.white, fontSize: 13),
+        ),
+      ],
     );
   }
 }

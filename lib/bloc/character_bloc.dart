@@ -28,8 +28,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           try {
             emit(state.copyWith(isLoading: true));
 
-            debugPrint('BLOC FETCH FIRST PAGE');
-
             final characterResponse = await apiProvider.fetchCharacters();
             emit(state.copyWith(
               allCharacters: characterResponse.characters,
@@ -52,7 +50,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
           try {
             emit(state.copyWith(isLoading: true));
 
-            debugPrint('BLOC FETCH NEXT PAGE');
             final characterResponse = await apiProvider.fetchCharacters(
               nextPageUrl: state.charactersPaginator!.next,
             );

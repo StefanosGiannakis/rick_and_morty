@@ -145,8 +145,11 @@ class CharacterListItem extends StatelessWidget {
                   width: 8,
                 ),
                 Expanded(
-                  flex: 3,
+                  flex: 2,
                   child: CommonCharacterDetails(character: character),
+                ),
+                const SizedBox(
+                  width: 8,
                 ),
               ],
             ),

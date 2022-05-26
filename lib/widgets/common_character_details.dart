@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/models/character.dart';
+import 'package:rick_and_morty/models/character_details.dart';
 
 class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
   final Character character;
@@ -20,7 +21,7 @@ class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
               color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
           textAlign: TextAlign.left,
         ),
-        const SizedBox(height: 4),
+        const SizedBox(height: 2),
         Row(
           children: [
             Container(
@@ -45,7 +46,28 @@ class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
             ),
           ],
         ),
-        const SizedBox(height: 5),
+        const SizedBox(height: 6),
+        DisplayLocation(location: character.location),
+        const SizedBox(height: 12),
+        DisplayOrigin(origin: character.origin),
+        const SizedBox(height: 12),
+      ],
+    );
+  }
+}
+
+class DisplayLocation extends StatelessWidget {
+  final Location location;
+  const DisplayLocation({
+    Key? key,
+    required this.location,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         const Text(
           'Last known location:',
           maxLines: 1,
@@ -53,20 +75,36 @@ class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
         ),
         const SizedBox(height: 2),
         Text(
-          character.location.name,
+          location.name,
           style: const TextStyle(color: Colors.white, fontSize: 13),
         ),
-        const SizedBox(height: 12),
+      ],
+    );
+  }
+}
+
+class DisplayOrigin extends StatelessWidget {
+  final Location origin;
+  const DisplayOrigin({
+    Key? key,
+    required this.origin,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
         const Text(
           'First seen in:',
+          maxLines: 1,
           style: TextStyle(color: Colors.white38, fontSize: 12),
         ),
         const SizedBox(height: 2),
         Text(
-          character.origin.name,
+          origin.name,
           style: const TextStyle(color: Colors.white, fontSize: 13),
         ),
-        const SizedBox(height: 8),
       ],
     );
   }

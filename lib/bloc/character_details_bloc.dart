@@ -13,12 +13,9 @@ class CharacterDetailsBloc
 
   CharacterDetailsBloc() : super(const CharacterDetailsInitial()) {
     on<CharacterDetailsEvent>((event, emit) async {
-      print("character details" + event.toString());
       if (event is CharacterDetailsFetched) {
         try {
           emit(state.copyWith(isLoading: true));
-
-          print('BLOC FETCH CHARACTER DETAILS');
 
           final characterDetails = await apiProvider.fetchCharacterDetails(
             characterId: event.characterId,

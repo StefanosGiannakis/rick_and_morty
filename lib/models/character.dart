@@ -1,6 +1,4 @@
-import 'package:rick_and_morty/models/abstract_character.dart';
-
-class Character extends AbstractCharacter {
+class Character {
   final int id;
   final String name;
   final String status;

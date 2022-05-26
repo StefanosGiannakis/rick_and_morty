@@ -11,10 +11,10 @@ class CharacterDetailsBloc
     extends Bloc<CharacterDetailsEvent, CharacterDetailsState> {
   final apiProvider = CharacterApiProvider();
 
-  CharacterDetailsBloc() : super(CharacterDetailsInitial()) {
+  CharacterDetailsBloc() : super(const CharacterDetailsInitial()) {
     on<CharacterDetailsEvent>((event, emit) async {
       print("character details" + event.toString());
-      if (event is FetchCharacterDetails) {
+      if (event is CharacterDetailsFetched) {
         try {
           emit(state.copyWith(isLoading: true));
 

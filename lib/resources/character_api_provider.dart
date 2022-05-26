@@ -1,6 +1,4 @@
-import 'dart:convert';
 import 'package:dio/dio.dart';
-
 import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/models/character_details.dart';
 import 'package:rick_and_morty/models/characters_paginator.dart';

@@ -24,7 +24,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   CharacterBloc() : super(CharacterInitial()) {
     on<CharacterEvent>(
       (event, emit) async {
-        if (event is FetchCharacters) {
+        if (event is CharacterFetched) {
           try {
             emit(state.copyWith(isLoading: true));
 
@@ -44,7 +44,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
             ));
           }
         }
-        if (event is FetchCharactersNextPage) {
+        if (event is CharactersNextPageFetched) {
           if (state.charactersPaginator!.next == null || state.isLoading) {
             return;
           }
@@ -75,6 +75,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       transformer: throttleDroppable(throttleDuration),
     );
 
-    add(FetchCharacters()); // init
+    add(CharacterFetched()); // init
   }
 }

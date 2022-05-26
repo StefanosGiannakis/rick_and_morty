@@ -20,39 +20,54 @@ class CharacterDetailsView extends StatelessWidget {
       ),
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
       body: SafeArea(
-        child: Column(
-          children: [
-            CachedNetworkImage(
-              imageUrl: characterDetails.image,
-              width: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => const SizedBox(
-                height: 400,
-                child: CircularProgressIndicator(),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CachedNetworkImage(
+                imageUrl: characterDetails.image,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => const SizedBox(
+                  height: 400,
+                  child: CircularProgressIndicator(),
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: SingleChildScrollView(
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Column(
+                  mainAxisSize: MainAxisSize.max,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 10.0),
                     CommonCharacterDetails(
                       character: characterDetails,
                     ),
-                    CommonCharacterDetails(
-                      character: characterDetails,
+                    const SizedBox(height: 5),
+                    const Text(
+                      'Gender:',
+                      style: TextStyle(color: Colors.white38, fontSize: 12),
                     ),
+                    const SizedBox(height: 2),
                     Text(
-                      characterDetails.status,
-                      style: const TextStyle(color: Colors.white),
+                      characterDetails.gender,
+                      style: const TextStyle(color: Colors.white, fontSize: 13),
                     ),
-                    const SizedBox(height: 8.0),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Episodes:',
+                      style: TextStyle(color: Colors.white38, fontSize: 12),
+                    ),
+                    const SizedBox(height: 2),
+                    // ListView.builder(itemBuilder: itemBuilder)
+                    Text(
+                      characterDetails.origin.name,
+                      style: const TextStyle(color: Colors.white, fontSize: 13),
+                    ),
                   ],
                 ),
               ),
-            )
-          ],
+            ],
+          ),
         ),
       ),
     );

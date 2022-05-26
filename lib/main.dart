@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.grey,
         ),
-        home: const HomePage(title: 'Ricky & Morty'),
+        home: const HomePage(title: 'Rick & Morty'),
       ),
     );
   }

@@ -2,14 +2,12 @@ part of 'character_details_bloc.dart';
 
 enum CharacterDetailsStatus { initial, success, failure }
 
-abstract class AbstractCharacterDetailsState extends Equatable {}
-
-class CharacterDetailsState extends AbstractCharacterDetailsState {
-  final CharacterDetails characterDetails; //@note
+class CharacterDetailsState extends Equatable {
+  final CharacterDetails? characterDetails;
   final bool isLoading;
   final CharacterDetailsStatus status;
 
-  CharacterDetailsState({
+  const CharacterDetailsState({
     required this.characterDetails,
     required this.isLoading,
     required this.status,
@@ -31,35 +29,10 @@ class CharacterDetailsState extends AbstractCharacterDetailsState {
   List<Object?> get props => [characterDetails, isLoading, status];
 }
 
-// class CharacterDetailsInitial extends AbstractCharacterDetailsState {
-//   final CharacterDetailsStatus status = CharacterDetailsStatus.initial;
-
-//   @override
-//   List<Object?> get props => [status];
-// }
 class CharacterDetailsInitial extends CharacterDetailsState {
-  CharacterDetailsInitial()
+  const CharacterDetailsInitial()
       : super(
-          characterDetails: CharacterDetails.fromJson({
-            "id": 1,
-            "name": "Rick Sanchez",
-            "status": "Alive",
-            "species": "Human",
-            "type": "",
-            "gender": "Male",
-            "origin": {
-              "name": "Earth (C-137)",
-              "url": "https://rickandmortyapi.com/api/location/1"
-            },
-            "location": {
-              "name": "Citadel of Ricks",
-              "url": "https://rickandmortyapi.com/api/location/3"
-            },
-            "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
-            "episode": ["https://rickandmortyapi.com/api/episode/1"],
-            "url": "https://rickandmortyapi.com/api/character/1",
-            "created": "2017-11-04T18:48:46.250Z"
-          }),
+          characterDetails: null,
           isLoading: true,
           status: CharacterDetailsStatus.initial,
         );

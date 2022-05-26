@@ -13,22 +13,29 @@ class DetailsPage extends StatelessWidget with DescriptionHelpers {
     return BlocProvider(
       create: (context) => CharacterDetailsBloc()
         ..add(
-          FetchCharacterDetails(characterId: characterId),
+          CharacterDetailsFetched(characterId: characterId),
         ),
       child: BlocBuilder<CharacterDetailsBloc, CharacterDetailsState>(
         builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
           switch (state.status) {
             case CharacterDetailsStatus.failure:
-              return const Center(
-                  child: Text(
-                'Failed to fetch character details',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ));
+              return const Scaffold(
+                backgroundColor: Colors.black,
+                body: Center(
+                    child: Text(
+                  'Failed to fetch character details',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                )),
+              );
             case CharacterDetailsStatus.success:
               return CharacterDetailsView(
-                characterDetails: state.characterDetails,
+                characterDetails: state.characterDetails!,
               );
             default:
               return const Center(child: CircularProgressIndicator());

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
-import 'package:rick_and_morty/models/abstract_character.dart';
 import 'package:rick_and_morty/models/character.dart';
 
 class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
-  final character; // @note
+  final Character character;
   const CommonCharacterDetails({Key? key, required this.character})
       : super(key: key);
 

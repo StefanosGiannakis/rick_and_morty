@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
@@ -39,7 +38,9 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _onScroll() {
-    if (_isBottom) context.read<CharacterBloc>().add(FetchCharactersNextPage());
+    if (_isBottom) {
+      context.read<CharacterBloc>().add(CharactersNextPageFetched());
+    }
   }
 
   @override

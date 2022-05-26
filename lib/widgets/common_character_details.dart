@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/models/character.dart';
-import 'package:rick_and_morty/models/character_details.dart';
 
-class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
+class CommonCharacterDetails extends StatelessWidget {
   final Character character;
   const CommonCharacterDetails({Key? key, required this.character})
       : super(key: key);
@@ -15,42 +14,76 @@ class CommonCharacterDetails extends StatelessWidget with DescriptionHelpers {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         const SizedBox(height: 8),
-        Text(
-          character.id.toString() + ' ' + character.name,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
-          textAlign: TextAlign.left,
-        ),
+        DisplayName(name: character.name),
         const SizedBox(height: 2),
-        Row(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                color: getCharacterStatusColor(character.status),
-                borderRadius: BorderRadius.circular(7),
-              ),
-              constraints: const BoxConstraints(
-                minWidth: 8,
-                minHeight: 8,
-              ),
-              child: const SizedBox(
-                width: 2,
-                height: 2,
-              ),
-            ),
-            const SizedBox(width: 4),
-            Text(
-              character.status,
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              textAlign: TextAlign.left,
-            ),
-          ],
-        ),
+        DisplayStatus(status: character.status),
         const SizedBox(height: 6),
         DisplayLocation(location: character.location),
         const SizedBox(height: 12),
         DisplayOrigin(origin: character.origin),
         const SizedBox(height: 12),
+      ],
+    );
+  }
+}
+
+class DisplayName extends StatelessWidget {
+  final String name;
+  const DisplayName({
+    Key? key,
+    required this.name,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      name,
+      style: const TextStyle(
+          color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+      textAlign: TextAlign.left,
+    );
+  }
+}
+
+class DisplayStatus extends StatelessWidget with DescriptionHelpers {
+  final String status;
+  late final bool isAKnownStatus = List.of(['Alive', 'Dead']).contains(status);
+
+  DisplayStatus({
+    Key? key,
+    required this.status,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        isAKnownStatus
+            ? Row(
+                children: [
+                  Container(
+                    decoration: BoxDecoration(
+                      color: getCharacterStatusColor(status),
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    constraints: const BoxConstraints(
+                      minWidth: 8,
+                      minHeight: 8,
+                    ),
+                    child: const SizedBox(
+                      width: 2,
+                      height: 2,
+                    ),
+                  ),
+                  const SizedBox(width: 4),
+                ],
+              )
+            : Container(),
+        Text(
+          status,
+          style: const TextStyle(color: Colors.white, fontSize: 12),
+          textAlign: TextAlign.left,
+        ),
       ],
     );
   }

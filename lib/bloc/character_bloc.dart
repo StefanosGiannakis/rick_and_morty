@@ -24,7 +24,7 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
   CharacterBloc() : super(CharacterInitial()) {
     on<CharacterEvent>(
       (event, emit) async {
-        if (event is CharacterFetched) {
+        if (event is CharactersFetched) {
           try {
             emit(state.copyWith(isLoading: true));
 
@@ -75,6 +75,6 @@ class CharacterBloc extends Bloc<CharacterEvent, CharacterState> {
       transformer: throttleDroppable(throttleDuration),
     );
 
-    add(CharacterFetched()); // init
+    add(CharactersFetched()); // init
   }
 }

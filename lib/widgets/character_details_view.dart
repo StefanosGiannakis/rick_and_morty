@@ -20,35 +20,38 @@ class CharacterDetailsView extends StatelessWidget {
       ),
       backgroundColor: const Color.fromARGB(36, 40, 47, 1),
       body: SafeArea(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              CachedNetworkImage(
-                imageUrl: characterDetails.image,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                placeholder: (context, url) => const SizedBox(
-                  height: 400,
-                  child: CircularProgressIndicator(),
+        child: Scrollbar(
+          isAlwaysShown: true,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                CachedNetworkImage(
+                  imageUrl: characterDetails.image,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) => const SizedBox(
+                    height: 400,
+                    child: CircularProgressIndicator(),
+                  ),
                 ),
-              ),
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(height: 10.0),
-                    CommonCharacterDetails(
-                      character: characterDetails,
-                    ),
-                    DisplayGender(gender: characterDetails.gender),
-                    const SizedBox(height: 12),
-                    DisplayEpisodes(episodes: characterDetails.episodes),
-                  ],
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 10.0),
+                      CommonCharacterDetails(
+                        character: characterDetails,
+                      ),
+                      DisplayGender(gender: characterDetails.gender),
+                      const SizedBox(height: 12),
+                      DisplayEpisodes(episodes: characterDetails.episodes),
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

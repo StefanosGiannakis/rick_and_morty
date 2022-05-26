@@ -1,11 +1,11 @@
 import 'character.dart';
 
 class CharacterDetails extends Character {
-  final List<String>? episodes;
+  final List<dynamic> episode;
   final String created;
 
   CharacterDetails.fromJson(Map<String, dynamic> json)
-      : episodes = json["episodes"],
+      : episode = json["episode"],
         created = json["created"],
         super.fromJson(json);
 }

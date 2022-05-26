@@ -46,7 +46,9 @@ class CharacterDetailsView extends StatelessWidget {
                       ),
                       DisplayGender(gender: characterDetails.gender),
                       const SizedBox(height: 12),
-                      DisplayEpisodes(episodes: characterDetails.episodes),
+                      DisplayEpisodes(
+                        episode: characterDetails.episode,
+                      )
                     ],
                   ),
                 ),
@@ -86,25 +88,40 @@ class DisplayGender extends StatelessWidget {
 }
 
 class DisplayEpisodes extends StatelessWidget {
-  final List<String>? episodes;
-  const DisplayEpisodes({
+  final List<dynamic> episode;
+
+  final List<int> colorCodes = <int>[600, 500];
+
+  DisplayEpisodes({
     Key? key,
-    this.episodes,
+    required this.episode,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        Text(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
           'Episodes:',
           style: TextStyle(color: Colors.white38, fontSize: 12),
         ),
-        SizedBox(height: 2),
-        Text(
-          'episodes',
-          style: TextStyle(color: Colors.white, fontSize: 13),
-        ),
+        const SizedBox(height: 2),
+        ListView.builder(
+            padding: const EdgeInsets.all(8),
+            itemCount: episode.length,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              return Container(
+                height: 50,
+                color: (index % 2 == 0)
+                    ? Colors.grey[colorCodes[0]]
+                    : Colors.grey[colorCodes[1]],
+                child: Center(child: Text('🎥  ${episode[index]}')),
+              );
+            }),
       ],
     );
   }

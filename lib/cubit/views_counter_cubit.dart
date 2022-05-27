@@ -9,12 +9,6 @@ class ViewsCounterCubit extends HydratedCubit<ViewsCounterState> {
   void increment() => emit(ViewsCounterState(counter: state.counter + 1));
 
   @override
-  void onChange(Change<ViewsCounterState> change) {
-    super.onChange(change);
-    print(change.toString());
-  }
-
-  @override
   ViewsCounterState? fromJson(Map<String, dynamic> json) {
     return ViewsCounterState(counter: json['counter']);
   }

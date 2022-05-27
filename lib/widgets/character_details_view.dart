@@ -31,7 +31,9 @@ class CharacterDetailsView extends StatelessWidget {
                   fit: BoxFit.cover,
                   placeholder: (context, url) => const SizedBox(
                     height: 400,
-                    child: CircularProgressIndicator(),
+                    child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
                   ),
                 ),
                 Container(
@@ -46,12 +48,12 @@ class CharacterDetailsView extends StatelessWidget {
                       ),
                       DisplayGender(gender: characterDetails.gender),
                       const SizedBox(height: 12),
-                      DisplayEpisodes(
-                        episode: characterDetails.episode,
-                      )
                     ],
                   ),
                 ),
+                DisplayEpisodes(
+                  episode: characterDetails.episode,
+                )
               ],
             ),
           ),
@@ -90,9 +92,7 @@ class DisplayGender extends StatelessWidget {
 class DisplayEpisodes extends StatelessWidget {
   final List<dynamic> episode;
 
-  final List<int> colorCodes = <int>[600, 500];
-
-  DisplayEpisodes({
+  const DisplayEpisodes({
     Key? key,
     required this.episode,
   }) : super(key: key);
@@ -103,9 +103,12 @@ class DisplayEpisodes extends StatelessWidget {
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
-          'Episodes:',
-          style: TextStyle(color: Colors.white38, fontSize: 12),
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: const Text(
+            'Episodes:',
+            style: TextStyle(color: Colors.white38, fontSize: 12),
+          ),
         ),
         const SizedBox(height: 2),
         ListView.builder(
@@ -114,12 +117,17 @@ class DisplayEpisodes extends StatelessWidget {
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemBuilder: (BuildContext context, int index) {
-              return Container(
-                height: 50,
+              return Card(
                 color: (index % 2 == 0)
-                    ? Colors.grey[colorCodes[0]]
-                    : Colors.grey[colorCodes[1]],
-                child: Center(child: Text('🎥  ${episode[index]}')),
+                    ? Colors.blue.shade50
+                    : Colors.orange.shade50,
+                child: ListTile(
+                  title: Text(
+                    '🎥  ${episode[index]}',
+                    maxLines: 1,
+                    style: const TextStyle(fontSize: 14.0),
+                  ),
+                ),
               );
             }),
       ],

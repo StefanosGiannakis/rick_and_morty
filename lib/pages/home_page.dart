@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_bloc.dart';
+import 'package:rick_and_morty/cubit/views_counter_cubit.dart';
 import 'package:rick_and_morty/models/character.dart';
 import 'package:rick_and_morty/pages/details_page.dart';
 import 'package:rick_and_morty/widgets/common_character_details.dart';
@@ -48,7 +49,9 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.title,
+          widget.title +
+              " - Views: " +
+              context.watch<ViewsCounterCubit>().state.counter.toString(),
           style: const TextStyle(color: Colors.white),
         ),
       ),

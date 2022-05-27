@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rick_and_morty/bloc/character_details_bloc.dart';
+import 'package:rick_and_morty/cubit/views_counter_cubit.dart';
 import 'package:rick_and_morty/mixins/description_helpers.dart';
 import 'package:rick_and_morty/widgets/character_details_view.dart';
 
@@ -34,6 +35,8 @@ class DetailsPage extends StatelessWidget with DescriptionHelpers {
                 )),
               );
             case CharacterDetailsStatus.success:
+              BlocProvider.of<ViewsCounterCubit>(context).increment();
+
               return CharacterDetailsView(
                 characterDetails: state.characterDetails!,
               );

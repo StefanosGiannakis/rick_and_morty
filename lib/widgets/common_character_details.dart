@@ -58,27 +58,27 @@ class DisplayStatus extends StatelessWidget with DescriptionHelpers {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        isAKnownStatus
-            ? Row(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                      color: getCharacterStatusColor(status),
-                      borderRadius: BorderRadius.circular(7),
-                    ),
-                    constraints: const BoxConstraints(
-                      minWidth: 8,
-                      minHeight: 8,
-                    ),
-                    child: const SizedBox(
-                      width: 2,
-                      height: 2,
-                    ),
-                  ),
-                  const SizedBox(width: 4),
-                ],
-              )
-            : Container(),
+        if (isAKnownStatus) ...[
+          Row(
+            children: [
+              Container(
+                decoration: BoxDecoration(
+                  color: getCharacterStatusColor(status),
+                  borderRadius: BorderRadius.circular(7),
+                ),
+                constraints: const BoxConstraints(
+                  minWidth: 8,
+                  minHeight: 8,
+                ),
+                child: const SizedBox(
+                  width: 2,
+                  height: 2,
+                ),
+              ),
+              const SizedBox(width: 4),
+            ],
+          )
+        ],
         Text(
           status,
           style: const TextStyle(color: Colors.white, fontSize: 12),
